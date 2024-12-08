@@ -47,7 +47,7 @@ class OgreFontdefGenerator(object):
         self.ogre_fontdef_file.writelines(["{}\n".format(self.output_font_name), "{\n", "\ttype image\n", "\tsource {}{}\n".format(self.font_png_file_name, self.fnt_image_file_suffix)])
     
     def parse_char(self):
-        rwr_width_offset = int(0.00655 * self.fnt_image_width) # rwr逆天算法, 字符渲染宽度会随着材质尺寸发生变化, 此为逆向消除偏移量, 仅字符材质间隔为1px的时候适用
+        #rwr_width_offset = int(0.00655 * self.fnt_image_width) # rwr逆天算法, 字符渲染宽度会随着材质尺寸发生变化, 此为逆向消除偏移量, 仅字符材质间隔为1px的时候适用
         rwr_width_offset = 0
         for char in self.fnt_chars:
             id = int(char.attrib.get("id"))
@@ -84,21 +84,25 @@ class OgreFontdefGenerator(object):
 if __name__ == "__main__":
     # 字体位图生成器
     # https://angelcode.com/products/bmfont/
+    basic = "微软雅黑_7000常用汉字_RWR已有翻译字体_补充部分外文_40px_0outline_45xspace_0offset_5000x5000.fnt"
+    basic_outline = "微软雅黑_7000常用汉字_RWR已有翻译字体_补充部分外文_34px_3outline_36xspace_0offset_5000x5000.fnt"
+    input_outline = "微软雅黑_7000常用汉字_RWR已有翻译字体_补充部分外文_34px_3outline_36xspace_0offset_5000x5000.fnt"
+    
     rfg = OgreFontdefGenerator(
-        fnt_file_path="微软雅黑_7000常用汉字_RWR已有翻译字体_补充部分外文_42px_0outline_45xspace_0offset_5000x5000.fnt",
+        fnt_file_path=basic,
         output_font_name="ChineseBasicFont100",
         output_font_file_name="chinese_basic_font_100",
         font_png_file_name="chinese_basic_font_100"
     )
     rfg = OgreFontdefGenerator(
-        fnt_file_path="微软雅黑_7000常用汉字_RWR已有翻译字体_补充部分外文_42px_0outline_45xspace_0offset_5000x5000.fnt",
+        fnt_file_path=basic,
         output_font_name="ChineseBasicFont050",
         output_font_file_name="chinese_basic_font_050",
         font_png_file_name="chinese_basic_font_050",
         font_image_scale=2048/3200
-    ) # font_image_scale缩放参数参考了原有字库文件的尺寸比例, 可以自行调整到合适的清晰度和大小, 过大可能导致游戏无法启动(不同050和025的字体允许大材质大小要比100低得多)
+    ) # font_image_scale缩放参数参考了原有字库文件的尺寸比例, 可以自行调整到合适的清晰度和大小, 过大可能导致游戏无法启动(050和025的字体允许大材质大小要比100低得多)
     rfg = OgreFontdefGenerator(
-        fnt_file_path="微软雅黑_7000常用汉字_RWR已有翻译字体_补充部分外文_42px_0outline_45xspace_0offset_5000x5000.fnt",
+        fnt_file_path=basic,
         output_font_name="ChineseBasicFont025",
         output_font_file_name="chinese_basic_font_025",
         font_png_file_name="chinese_basic_font_025",
@@ -106,20 +110,20 @@ if __name__ == "__main__":
     )
     
     rfg = OgreFontdefGenerator(
-        fnt_file_path="微软雅黑_7000常用汉字_RWR已有翻译字体_补充部分外文_36px_3outline_44xspace_0offset_5000x5000.fnt",
+        fnt_file_path=basic_outline,
         output_font_name="ChineseBasicFontOutline100",
         output_font_file_name="chinese_basic_font_outline_100",
         font_png_file_name="chinese_basic_font_outline_100"
     )
     rfg = OgreFontdefGenerator(
-        fnt_file_path="微软雅黑_7000常用汉字_RWR已有翻译字体_补充部分外文_36px_3outline_44xspace_0offset_5000x5000.fnt",
+        fnt_file_path=basic_outline,
         output_font_name="ChineseBasicFontOutline050",
         output_font_file_name="chinese_basic_font_outline_050",
         font_png_file_name="chinese_basic_font_outline_050",
         font_image_scale=2048/3200
     )
     rfg = OgreFontdefGenerator(
-        fnt_file_path="微软雅黑_7000常用汉字_RWR已有翻译字体_补充部分外文_36px_3outline_44xspace_0offset_5000x5000.fnt",
+        fnt_file_path=basic_outline,
         output_font_name="ChineseBasicFontOutline025",
         output_font_file_name="chinese_basic_font_outline_025",
         font_png_file_name="chinese_basic_font_outline_025",
@@ -127,20 +131,20 @@ if __name__ == "__main__":
     )
 
     rfg = OgreFontdefGenerator(
-        fnt_file_path="微软雅黑_7000常用汉字_RWR已有翻译字体_补充部分外文_36px_3outline_44xspace_0offset_5000x5000.fnt",
+        fnt_file_path=input_outline,
         output_font_name="ChineseInputFontOutline100",
         output_font_file_name="chinese_input_font_outline_100",
         font_png_file_name="chinese_basic_font_outline_100"
     )
     rfg = OgreFontdefGenerator(
-        fnt_file_path="微软雅黑_7000常用汉字_RWR已有翻译字体_补充部分外文_36px_3outline_44xspace_0offset_5000x5000.fnt",
+        fnt_file_path=input_outline,
         output_font_name="ChineseInputFontOutline050",
         output_font_file_name="chinese_input_font_outline_050",
         font_png_file_name="chinese_basic_font_outline_050",
         font_image_scale=2048/3200
     )
     rfg = OgreFontdefGenerator(
-        fnt_file_path="微软雅黑_7000常用汉字_RWR已有翻译字体_补充部分外文_36px_3outline_44xspace_0offset_5000x5000.fnt",
+        fnt_file_path=input_outline,
         output_font_name="ChineseInputFontOutline025",
         output_font_file_name="chinese_input_font_outline_025",
         font_png_file_name="chinese_basic_font_outline_025",
