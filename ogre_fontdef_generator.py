@@ -77,15 +77,15 @@ class OgreFontdefGenerator(object):
         else:
             if self.fnt_image == None:
                 self.fnt_image = cv2.imdecode(np.fromfile(file=self.fnt_image_file_path, dtype=np.uint8), cv2.IMREAD_UNCHANGED)
-            self.fnt_image_scaled = cv2.resize(src=self.fnt_image, dsize=(int(self.fnt_image_width * self.font_image_scale), int(self.fnt_image_height * self.font_image_scale)), interpolation=cv2.INTER_CUBIC)
+            self.fnt_image_scaled = cv2.resize(src=self.fnt_image, dsize=(int(self.fnt_image_width * self.font_image_scale), int(self.fnt_image_height * self.font_image_scale)), interpolation=cv2.INTER_AREA)
             cv2.imencode(ext=self.fnt_image_file_suffix, img=self.fnt_image_scaled)[1].tofile("{}{}".format(self.font_png_file_name, self.fnt_image_file_suffix))
         
 if __name__ == "__main__":
     # 字体位图生成器
     # https://angelcode.com/products/bmfont/
-    basic = "微软雅黑_7000常用汉字_RWR已有翻译字体_补充部分外文_34px_0outline_36xspace_0offset_5000x5000.fnt"
-    basic_outline = "微软雅黑_7000常用汉字_RWR已有翻译字体_补充部分外文_34px_3outline_36xspace_0offset_5000x5000.fnt"
-    input_outline = "微软雅黑_7000常用汉字_RWR已有翻译字体_补充部分外文_34px_3outline_36xspace_0offset_5000x5000.fnt"
+    basic = "文泉驿正黑体/43.fnt"
+    basic_outline = "文泉驿正黑体/38outline.fnt"
+    input_outline = "文泉驿正黑体/38outline.fnt"
     
     rfg = OgreFontdefGenerator(
         fnt_file_path=basic,
