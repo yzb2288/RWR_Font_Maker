@@ -5,12 +5,13 @@ import numpy as np
 import xml.etree.ElementTree as ET
 
 class OgreFontdefGenerator(object):
-    def __init__(self, fnt_file_path:str, output_font_name, output_font_file_name, font_png_file_name, font_image_scale:float=1):
+    def __init__(self, fnt_file_path:str, output_font_name, output_font_file_name, font_png_file_name, font_image_scale:float=1, rwr_width_offset=0):
         self.fnt_file_path = fnt_file_path
         self.output_font_name = output_font_name
         self.output_font_file_name, self.output_font_file_suffix = os.path.splitext(os.path.basename(output_font_file_name))
         self.font_png_file_name, self.font_png_file_suffix = os.path.splitext(os.path.basename(font_png_file_name))
         self.font_image_scale = font_image_scale
+        self.rwr_width_offset = rwr_width_offset
         self.fnt_tree = ET.parse(fnt_file_path)
         self.fnt_root = self.fnt_tree.getroot()
 
@@ -47,8 +48,8 @@ class OgreFontdefGenerator(object):
         self.ogre_fontdef_file.writelines(["{}\n".format(self.output_font_name), "{\n", "\ttype image\n", "\tsource {}{}\n".format(self.font_png_file_name, self.fnt_image_file_suffix)])
     
     def parse_char(self):
-        #rwr_width_offset = int(0.00655 * self.fnt_image_width) # rwr逆天算法, 字符渲染宽度会随着材质尺寸发生变化, 此为逆向消除偏移量, 仅字符材质间隔为1px的时候适用
-        rwr_width_offset = 0
+        #self.rwr_width_offset = int(0.00655 * self.fnt_image_width) # rwr逆天算法, 字符渲染宽度会随着材质尺寸发生变化, 此为逆向消除偏移量, 仅字符材质间隔为1px的时候适用
+        #self.rwr_width_offset = 0
         for char in self.fnt_chars:
             id = int(char.attrib.get("id"))
             x = int(char.attrib.get("x"))
@@ -58,9 +59,9 @@ class OgreFontdefGenerator(object):
             xoffset = int(char.attrib.get("xoffset"))
             yoffset = int(char.attrib.get("yoffset"))
             xadvance = int(char.attrib.get("xadvance"))
-            u1 = (x + rwr_width_offset) / self.fnt_image_width
+            u1 = (x + self.rwr_width_offset) / self.fnt_image_width
             v1 = y / self.fnt_image_height
-            u2 = (x + width - rwr_width_offset) / self.fnt_image_width
+            u2 = (x + width - self.rwr_width_offset) / self.fnt_image_width
             v2 = (y + height) / self.fnt_image_height
             self.ogre_fontdef_file.write("\tglyph u{} {} {} {} {}\n".format(id, u1, v1, u2, v2))
             #if id == 82:
@@ -81,6 +82,222 @@ class OgreFontdefGenerator(object):
             cv2.imencode(ext=self.fnt_image_file_suffix, img=self.fnt_image_scaled)[1].tofile("{}{}".format(self.font_png_file_name, self.fnt_image_file_suffix))
         
 if __name__ == "__main__":
+    ############################# korean
+    basic = "korean_basic_font_100\\korean_basic_font.fnt"
+    basic_outline = "korean_basic_font_outline_100\\korean_basic_font_outline.fnt"
+    input_outline = "korean_basic_font_outline_100\\korean_basic_font_outline.fnt"
+    
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic,
+        output_font_name="KoreanBasicFont100",
+        output_font_file_name="korean_basic_font_100",
+        font_png_file_name="korean_basic_font_100"
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic,
+        output_font_name="KoreanBasicFont050",
+        output_font_file_name="korean_basic_font_050",
+        font_png_file_name="korean_basic_font_050",
+        font_image_scale=2048/3200
+    ) # font_image_scale缩放参数参考了原有字库文件的尺寸比例, 可以自行调整到合适的清晰度和大小, 过大可能导致游戏无法启动(050和025的字体允许大材质大小要比100低得多)
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic,
+        output_font_name="KoreanBasicFont025",
+        output_font_file_name="korean_basic_font_025",
+        font_png_file_name="korean_basic_font_025",
+        font_image_scale=1536/3200
+    )
+    
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic_outline,
+        output_font_name="KoreanBasicFontOutline100",
+        output_font_file_name="korean_basic_font_outline_100",
+        font_png_file_name="korean_basic_font_outline_100"
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic_outline,
+        output_font_name="KoreanBasicFontOutline050",
+        output_font_file_name="korean_basic_font_outline_050",
+        font_png_file_name="korean_basic_font_outline_050",
+        font_image_scale=2048/3200
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic_outline,
+        output_font_name="KoreanBasicFontOutline025",
+        output_font_file_name="korean_basic_font_outline_025",
+        font_png_file_name="korean_basic_font_outline_025",
+        font_image_scale=1536/3200
+    )
+
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=input_outline,
+        output_font_name="KoreanInputFontOutline100",
+        output_font_file_name="korean_input_font_outline_100",
+        font_png_file_name="korean_basic_font_outline_100"
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=input_outline,
+        output_font_name="KoreanInputFontOutline050",
+        output_font_file_name="korean_input_font_outline_050",
+        font_png_file_name="korean_basic_font_outline_050",
+        font_image_scale=2048/3200
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=input_outline,
+        output_font_name="KoreanInputFontOutline025",
+        output_font_file_name="korean_input_font_outline_025",
+        font_png_file_name="korean_basic_font_outline_025",
+        font_image_scale=1536/3200
+    )
+    ############################# russian
+    '''
+    basic = "russian_basic_font_100\\russian_basic_font.fnt"
+    basic_outline = "russian_basic_font_outline_100\\russian_basic_font_outline.fnt"
+    input_outline = "russian_basic_font_outline_100\\russian_basic_font_outline.fnt"
+    
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic,
+        output_font_name="RussianBasicFont100",
+        output_font_file_name="russian_basic_font_100",
+        font_png_file_name="russian_basic_font_100"
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic,
+        output_font_name="RussianBasicFont050",
+        output_font_file_name="russian_basic_font_050",
+        font_png_file_name="russian_basic_font_050",
+        font_image_scale=2048/3200
+    ) # font_image_scale缩放参数参考了原有字库文件的尺寸比例, 可以自行调整到合适的清晰度和大小, 过大可能导致游戏无法启动(050和025的字体允许大材质大小要比100低得多)
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic,
+        output_font_name="RussianBasicFont025",
+        output_font_file_name="russian_basic_font_025",
+        font_png_file_name="russian_basic_font_025",
+        font_image_scale=1536/3200
+    )
+    
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic_outline,
+        output_font_name="RussianBasicFontOutline100",
+        output_font_file_name="russian_basic_font_outline_100",
+        font_png_file_name="russian_basic_font_outline_100"
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic_outline,
+        output_font_name="RussianBasicFontOutline050",
+        output_font_file_name="russian_basic_font_outline_050",
+        font_png_file_name="russian_basic_font_outline_050",
+        font_image_scale=2048/3200
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic_outline,
+        output_font_name="RussianBasicFontOutline025",
+        output_font_file_name="russian_basic_font_outline_025",
+        font_png_file_name="russian_basic_font_outline_025",
+        font_image_scale=1536/3200
+    )
+
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=input_outline,
+        output_font_name="RussianInputFontOutline100",
+        output_font_file_name="russian_input_font_outline_100",
+        font_png_file_name="russian_input_font_outline_100"
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=input_outline,
+        output_font_name="RussianInputFontOutline050",
+        output_font_file_name="russian_input_font_outline_050",
+        font_png_file_name="russian_input_font_outline_050",
+        font_image_scale=2048/3200
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=input_outline,
+        output_font_name="RussianInputFontOutline025",
+        output_font_file_name="russian_input_font_outline_025",
+        font_png_file_name="russian_input_font_outline_025",
+        font_image_scale=1536/3200
+    )
+    '''
+    ################################# latin1
+    '''
+    basic = "latin1_basic_font_100\\latin1_basic_font.fnt"
+    basic_outline = "latin1_basic_font_outline_100\\latin1_basic_font_outline.fnt"
+    input_outline = "latin1_basic_font_outline_100\\latin1_basic_font_outline.fnt"
+    
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic,
+        output_font_name="Latin1BasicFont100",
+        output_font_file_name="latin1_basic_font_100",
+        font_png_file_name="latin1_basic_font_100",
+        rwr_width_offset=int(7 * 45 / 64)
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic,
+        output_font_name="Latin1BasicFont050",
+        output_font_file_name="latin1_basic_font_050",
+        font_png_file_name="latin1_basic_font_050",
+        font_image_scale=2048/3200,
+        rwr_width_offset=int(7 * 45 / 64)
+    ) # font_image_scale缩放参数参考了原有字库文件的尺寸比例, 可以自行调整到合适的清晰度和大小, 过大可能导致游戏无法启动(050和025的字体允许大材质大小要比100低得多)
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic,
+        output_font_name="Latin1BasicFont025",
+        output_font_file_name="latin1_basic_font_025",
+        font_png_file_name="latin1_basic_font_025",
+        font_image_scale=1536/3200,
+        rwr_width_offset=int(7 * 45 / 64)
+    )
+    
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic_outline,
+        output_font_name="Latin1BasicFontOutline100",
+        output_font_file_name="latin1_basic_font_outline_100",
+        font_png_file_name="latin1_basic_font_outline_100",
+        rwr_width_offset = int(10 * 47 / 64)
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic_outline,
+        output_font_name="Latin1BasicFontOutline050",
+        output_font_file_name="latin1_basic_font_outline_050",
+        font_png_file_name="latin1_basic_font_outline_050",
+        font_image_scale=2048/3200,
+        rwr_width_offset = int(10 * 47 / 64)
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic_outline,
+        output_font_name="Latin1BasicFontOutline025",
+        output_font_file_name="latin1_basic_font_outline_025",
+        font_png_file_name="latin1_basic_font_outline_025",
+        font_image_scale=1536/3200,
+        rwr_width_offset = int(10 * 47 / 64)
+    )
+
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=input_outline,
+        output_font_name="Latin1InputFontOutline100",
+        output_font_file_name="latin1_input_font_outline_100",
+        font_png_file_name="latin1_input_font_outline_100",
+        rwr_width_offset = int(10 * 47 / 64)
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=input_outline,
+        output_font_name="Latin1InputFontOutline050",
+        output_font_file_name="latin1_input_font_outline_050",
+        font_png_file_name="latin1_input_font_outline_050",
+        font_image_scale=2048/3200,
+        rwr_width_offset = int(10 * 47 / 64)
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=input_outline,
+        output_font_name="Latin1InputFontOutline025",
+        output_font_file_name="latin1_input_font_outline_025",
+        font_png_file_name="latin1_input_font_outline_025",
+        font_image_scale=1536/3200,
+        rwr_width_offset = int(10 * 47 / 64)
+    )
+    '''
+    ################################### chinese
+    '''
     # 字体位图生成器
     # https://angelcode.com/products/bmfont/
     basic = "文泉驿正黑体/43.fnt"
@@ -148,4 +365,4 @@ if __name__ == "__main__":
         output_font_file_name="chinese_input_font_outline_025",
         font_png_file_name="chinese_basic_font_outline_025",
         font_image_scale=1536/3200
-    )
+    )'''
