@@ -64,11 +64,10 @@ class OgreFontdefGenerator(object):
             u2 = (x + width - self.rwr_width_offset) / self.fnt_image_width
             v2 = (y + height) / self.fnt_image_height
             self.ogre_fontdef_file.write("\tglyph u{} {} {} {} {}\n".format(id, u1, v1, u2, v2))
-            #if id == 82:
-                #if self.fnt_image == None:
-                    #self.fnt_image = cv2.imread(filename=self.fnt_image_file_path, flags=cv2.IMREAD_UNCHANGED)
-                #char_image = self.fnt_image[y:(y+height), x:(x+width)]
-                #cv2.imencode(ext=self.fnt_image_file_suffix, img=char_image)[1].tofile("./{}_t.png".format(id))
+
+            #char_image = self.fnt_image[y:(y+height), x:(x+width)]
+            #cv2.imencode(ext=self.fnt_image_file_suffix, img=char_image)[1].tofile("./tmp/{}.png".format(id))
+            
         self.ogre_fontdef_file.write("}")
         self.ogre_fontdef_file.close()
     
@@ -83,6 +82,7 @@ class OgreFontdefGenerator(object):
         
 if __name__ == "__main__":
     ############################# korean
+    '''
     basic = "korean_basic_font_100\\korean_basic_font.fnt"
     basic_outline = "korean_basic_font_outline_100\\korean_basic_font_outline.fnt"
     input_outline = "korean_basic_font_outline_100\\korean_basic_font_outline.fnt"
@@ -149,11 +149,12 @@ if __name__ == "__main__":
         font_png_file_name="korean_basic_font_outline_025",
         font_image_scale=1536/3200
     )
+    '''
     ############################# russian
     '''
-    basic = "russian_basic_font_100\\russian_basic_font.fnt"
-    basic_outline = "russian_basic_font_outline_100\\russian_basic_font_outline.fnt"
-    input_outline = "russian_basic_font_outline_100\\russian_basic_font_outline.fnt"
+    basic = "Komika_45_basic\\Komika_45_basic.fnt"
+    basic_outline = "Komika_40_outline\\Komika_40_outline.fnt"
+    input_outline = "Komika_40_outline\\Komika_40_outline.fnt"
     
     rfg = OgreFontdefGenerator(
         fnt_file_path=basic,
@@ -220,9 +221,9 @@ if __name__ == "__main__":
     '''
     ################################# latin1
     '''
-    basic = "latin1_basic_font_100\\latin1_basic_font.fnt"
-    basic_outline = "latin1_basic_font_outline_100\\latin1_basic_font_outline.fnt"
-    input_outline = "latin1_basic_font_outline_100\\latin1_basic_font_outline.fnt"
+    basic = "Komika_45_basic\\Komika_45_basic.fnt"
+    basic_outline = "Komika_40_outline\\Komika_40_outline.fnt"
+    input_outline = "Komika_40_outline\\Komika_40_outline.fnt"
     
     rfg = OgreFontdefGenerator(
         fnt_file_path=basic,
@@ -297,12 +298,12 @@ if __name__ == "__main__":
     )
     '''
     ################################### chinese
-    '''
+    
     # 字体位图生成器
     # https://angelcode.com/products/bmfont/
-    basic = "文泉驿正黑体/43.fnt"
-    basic_outline = "文泉驿正黑体/38outline.fnt"
-    input_outline = "文泉驿正黑体/38outline.fnt"
+    basic = "思源黑体Medium\\字体生成配置\\6400_45_basic.fnt"
+    basic_outline = "思源黑体Medium\\字体生成配置\\6400_40_outline.fnt"
+    input_outline = "思源黑体Medium\\字体生成配置\\6400_40_outline.fnt"
     
     rfg = OgreFontdefGenerator(
         fnt_file_path=basic,
@@ -365,4 +366,4 @@ if __name__ == "__main__":
         output_font_file_name="chinese_input_font_outline_025",
         font_png_file_name="chinese_basic_font_outline_025",
         font_image_scale=1536/3200
-    )'''
+    )

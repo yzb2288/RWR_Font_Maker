@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <font_configs>
-	<font_config font="BasicFontOutline" letter_spacing="0.02" offset="0 -1.5 0" />
-	<font_config font="InputFontOutline" letter_spacing="0.02" offset="0 -1.5 0" />
-	<font_config font="BasicFont" letter_spacing="-0.02" offset="0 0 0" scale="1.33"/>
+	<font_config font="BasicFontOutline" letter_spacing="0.11" offset="0 -1.5 0" />
+	<font_config font="InputFontOutline" letter_spacing="0.11" offset="0 -1.5 0" />
+	<font_config font="BasicFont" letter_spacing="0.12" offset="0 -1 0" scale="1.28"/>
 </font_configs>
