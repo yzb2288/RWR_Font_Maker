@@ -91,17 +91,18 @@ class OgreFontdefGenerator(object):
             self.ogre_fontdef_file.write("\tglyph u{} {} {} {} {}\n".format(id, u1, v1, u2, v2))
 
             #char_image = self.fnt_image[y:(y+height), x:(x+width)]
-            #cv2.imencode(ext=self.fnt_image_file_suffix, img=char_image)[1].tofile("./tmp/{}.png".format(id))
+            #cv2.imencode(ext=self.fnt_image_file_suffix, img=char_image, params=[cv2.IMWRITE_PNG_COMPRESSION, 1])[1].tofile("./tmp/{}.png".format(id))
             
         self.ogre_fontdef_file.write("}")
         self.ogre_fontdef_file.close()
     
     def copy_png_image(self):
+        print("saving " + "{}{}".format(self.font_png_file_name, self.fnt_image_file_suffix))
         if self.font_image_scale == 1:
-            cv2.imencode(ext=self.fnt_image_file_suffix, img=self.fnt_image)[1].tofile("{}{}".format(self.font_png_file_name, self.fnt_image_file_suffix))
+            cv2.imencode(ext=self.fnt_image_file_suffix, img=self.fnt_image, params=[cv2.IMWRITE_PNG_COMPRESSION, 1])[1].tofile("{}{}".format(self.font_png_file_name, self.fnt_image_file_suffix))
         else:
             self.fnt_image_scaled = cv2.resize(src=self.fnt_image, dsize=(int(self.fnt_image_width * self.font_image_scale), int(self.fnt_image_height * self.font_image_scale)), interpolation=cv2.INTER_AREA)
-            cv2.imencode(ext=self.fnt_image_file_suffix, img=self.fnt_image_scaled)[1].tofile("{}{}".format(self.font_png_file_name, self.fnt_image_file_suffix))
+            cv2.imencode(ext=self.fnt_image_file_suffix, img=self.fnt_image_scaled, params=[cv2.IMWRITE_PNG_COMPRESSION, 1])[1].tofile("{}{}".format(self.font_png_file_name, self.fnt_image_file_suffix))
         
         
 if __name__ == "__main__":
@@ -321,8 +322,8 @@ if __name__ == "__main__":
         rwr_width_padding = -int(10 * 47 / 64)
     )
     '''
-    ################################### chinese
-    
+    ################################### chinese_old_font
+    '''
     # 字体位图生成器
     # https://angelcode.com/products/bmfont/
     basic = "Windows宋体\\sim_sun_basic.fnt"
@@ -399,4 +400,157 @@ if __name__ == "__main__":
         font_png_file_name="chinese_basic_font_outline_025",
         font_image_scale=1536/3200,
         addon_padding=[0, 3, 0, 2]
+    )
+    '''
+    
+    basic = "SarasaMonoSC-Bold+KOMIKA\\bmfc\\basic_sarasa_compressed.fnt"
+    basic_outline = "SarasaMonoSC-Bold+KOMIKA\\bmfc\\outline_sarasa_compressed.fnt"
+    input_outline = "SarasaMonoSC-Bold+KOMIKA\\bmfc\\outline_sarasa_compressed.fnt"
+    
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic,
+        output_font_name="Latin1BasicFont100",
+        output_font_file_name="latin1_basic_font_100",
+        font_png_file_name="latin1_basic_font_100",
+        addon_padding=[0, 0, 0, 0]
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic,
+        output_font_name="Latin1BasicFont050",
+        output_font_file_name="latin1_basic_font_050",
+        font_png_file_name="latin1_basic_font_050",
+        font_image_scale=2048/3200,
+        addon_padding=[0, 0, 0, 0]
+    ) # font_image_scale缩放参数参考了原有字库文件的尺寸比例, 可以自行调整到合适的清晰度和大小, 过大可能导致游戏无法启动(050和025的字体允许大材质大小要比100低得多)
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic,
+        output_font_name="Latin1BasicFont025",
+        output_font_file_name="latin1_basic_font_025",
+        font_png_file_name="latin1_basic_font_025",
+        font_image_scale=1536/3200,
+        addon_padding=[0, 0, 0, 0]
+    )
+    
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic_outline,
+        output_font_name="Latin1BasicFontOutline100",
+        output_font_file_name="latin1_basic_font_outline_100",
+        font_png_file_name="latin1_basic_font_outline_100",
+        addon_padding=[0, 0, 0, 0]
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic_outline,
+        output_font_name="Latin1BasicFontOutline050",
+        output_font_file_name="latin1_basic_font_outline_050",
+        font_png_file_name="latin1_basic_font_outline_050",
+        font_image_scale=2048/3200,
+        addon_padding=[0, 0, 0, 0]
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic_outline,
+        output_font_name="Latin1BasicFontOutline025",
+        output_font_file_name="latin1_basic_font_outline_025",
+        font_png_file_name="latin1_basic_font_outline_025",
+        font_image_scale=1536/3200,
+        addon_padding=[0, 0, 0, 0]
+    )
+
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=input_outline,
+        output_font_name="Latin1InputFontOutline100",
+        output_font_file_name="latin1_input_font_outline_100",
+        font_png_file_name="latin1_input_font_outline_100",
+        addon_padding=[0, 0, 0, 0]
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=input_outline,
+        output_font_name="Latin1InputFontOutline050",
+        output_font_file_name="latin1_input_font_outline_050",
+        font_png_file_name="latin1_input_font_outline_050",
+        font_image_scale=2048/3200,
+        addon_padding=[0, 0, 0, 0]
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=input_outline,
+        output_font_name="Latin1InputFontOutline025",
+        output_font_file_name="latin1_input_font_outline_025",
+        font_png_file_name="latin1_input_font_outline_025",
+        font_image_scale=1536/3200,
+        addon_padding=[0, 0, 0, 0]
+    )
+    
+    basic = "SarasaMonoSC-Bold\\bmfc\\basic_compressed.fnt"
+    basic_outline = "SarasaMonoSC-Bold\\bmfc\\outline_compressed.fnt"
+    input_outline = "SarasaMonoSC-Bold\\bmfc\\outline_compressed.fnt"
+    
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic,
+        output_font_name="ChineseBasicFont100",
+        output_font_file_name="chinese_basic_font_100",
+        font_png_file_name="chinese_basic_font_100",
+        addon_padding=[0, 0, 0, 0]
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic,
+        output_font_name="ChineseBasicFont050",
+        output_font_file_name="chinese_basic_font_050",
+        font_png_file_name="chinese_basic_font_050",
+        font_image_scale=2048/3072,
+        addon_padding=[0, 0, 0, 0]
+    ) # font_image_scale缩放参数参考了原有字库文件的尺寸比例, 可以自行调整到合适的清晰度和大小, 过大可能导致游戏无法启动(050和025的字体允许大材质大小要比100低得多)
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic,
+        output_font_name="ChineseBasicFont025",
+        output_font_file_name="chinese_basic_font_025",
+        font_png_file_name="chinese_basic_font_025",
+        font_image_scale=1536/3072,
+        addon_padding=[0, 0, 0, 0]
+    )
+    
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic_outline,
+        output_font_name="ChineseBasicFontOutline100",
+        output_font_file_name="chinese_basic_font_outline_100",
+        font_png_file_name="chinese_basic_font_outline_100",
+        addon_padding=[0, 0, 0, 0]
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic_outline,
+        output_font_name="ChineseBasicFontOutline050",
+        output_font_file_name="chinese_basic_font_outline_050",
+        font_png_file_name="chinese_basic_font_outline_050",
+        font_image_scale=2048/3200,
+        addon_padding=[0, 0, 0, 0]
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=basic_outline,
+        output_font_name="ChineseBasicFontOutline025",
+        output_font_file_name="chinese_basic_font_outline_025",
+        font_png_file_name="chinese_basic_font_outline_025",
+        font_image_scale=1536/3200,
+        addon_padding=[0, 0, 0, 0]
+    )
+
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=input_outline,
+        output_font_name="ChineseInputFontOutline100",
+        output_font_file_name="chinese_input_font_outline_100",
+        font_png_file_name="chinese_basic_font_outline_100",
+        addon_padding=[0, 0, 0, 0]
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=input_outline,
+        output_font_name="ChineseInputFontOutline050",
+        output_font_file_name="chinese_input_font_outline_050",
+        font_png_file_name="chinese_basic_font_outline_050",
+        font_image_scale=2048/3200,
+        addon_padding=[0, 0, 0, 0]
+    )
+    rfg = OgreFontdefGenerator(
+        fnt_file_path=input_outline,
+        output_font_name="ChineseInputFontOutline025",
+        output_font_file_name="chinese_input_font_outline_025",
+        font_png_file_name="chinese_basic_font_outline_025",
+        font_image_scale=1536/3200,
+        addon_padding=[0, 0, 0, 0]
     )

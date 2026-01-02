@@ -66,6 +66,10 @@ class FontCharChecker(object):
         else:
             print("当前字体已包含所有字符合集中的字符")
     
+    def save_fontdef_chars(self, file_path):
+        with open(file_path, "w", encoding="utf-8-sig") as fp:
+            fp.write(self.remove_upprintable_chars(self.fontdef_unicode_str))
+    
     def remove_upprintable_chars(self, s:str):
         """移除所有不可见字符"""
         return ''.join(x for x in s if x.isprintable())

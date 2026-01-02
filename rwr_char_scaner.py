@@ -23,6 +23,7 @@ class RWRCharScaner(object):
         self.rwr_package_folder_list = []
         self.rwr_names_folder_list = []
         self.rwr_language_folder_list = []
+        self.all_language_list = ["cn", "de", "en", "es", "fr", "it", "kr", "pl", "pt", "ru"]
         self.scan_char_str = ""
         
         self.get_rwr_package_folder_list()
@@ -53,11 +54,14 @@ class RWRCharScaner(object):
             for file in files:
                 if file == "languages":
                     file_path = os.path.join(packages_folder, file)
-                    language_folder_path = os.path.join(file_path, self.language)
-                    if os.path.exists(language_folder_path):
-                        self.rwr_language_folder_list.append(language_folder_path)
+                    if self.language == "all":
+                        self.rwr_language_folder_list.extend([os.path.join(file_path, language) for language in self.all_language_list])
                     else:
-                        raise Exception("不存在该翻译文件夹, 请检查language参数: {}".format(language_folder_path))
+                        language_folder_path = os.path.join(file_path, self.language)
+                        if os.path.exists(language_folder_path):
+                            self.rwr_language_folder_list.append(language_folder_path)
+                        else:
+                            raise Exception("不存在该翻译文件夹, 请检查language参数: {}".format(language_folder_path))
     
     def get_scan_file_list(self):
         for names_folder_path in self.rwr_names_folder_list:
@@ -92,6 +96,8 @@ class RWRCharScaner(object):
         print(scan_file_str)
         print("当前文件: {}".format(file_path))
         print("请检查以上文件解码内容是否包含乱码, 当前编码识别结果: {}".format(charset_detcet_result))
+        if "�" in scan_file_str:
+            print("\033[33m当前文件可能存在乱码字符�, 请手动检查\033[0m")
         print("输入回车确认使用当前编码, 输入新编码名称(python中允许使用的)重新打开: ")
         while True:
             try:
