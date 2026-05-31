@@ -159,7 +159,7 @@ class OgreFontdefReader(object):
 
 if __name__ == "__main__":
     
-    ofr = OgreFontdefReader(fontdef_file_path="origin\\fonts\\latin1_basic_font_100.fontdef")
+    ofr = OgreFontdefReader(fontdef_file_path="chinese_basic_font_100.fontdef")
     while True:
         print("输入单个字符:")
         char = input().strip()
@@ -168,6 +168,8 @@ if __name__ == "__main__":
             continue
         expc = ofr.get_expended_char_img_info(char, 0)
         print(expc)
+        char_img = ofr.get_char_img(char)
+        cv2.imencode(ext=".png", img=char_img, params=[cv2.IMWRITE_PNG_COMPRESSION, 1])[1].tofile(os.path.join("./", "{}.png".format(ord(char))))
     
     '''
     ### korean

@@ -7,10 +7,13 @@ class FntSpaceCompresser(FntReader):
     def __init__(self, fnt_path_list, font_type="outline"):
         super().__init__(fnt_path_list)
         self.output_fnt_path = "{}_compressed.fnt".format(os.path.splitext(self.fnt_path_list[0])[0])
+        self.font_type = font_type
         if font_type.lower() == "basic":
             self.fill_value = [255, 255, 255, 0]
+            self.extra_line_space = 1
         elif font_type.lower() == "outline":
             self.fill_value = [0, 0, 0, 0]
+            self.extra_line_space = 0
         self.compress_page()
         self.save_fnt(self.output_fnt_path)
     
@@ -18,6 +21,7 @@ class FntSpaceCompresser(FntReader):
         last_line_y = 0
         move_up_sum = 0
         last_line_min_space_bottom = 0
+        first_line = True
         for page in self.fnt_page_line_sorted_char_dict.keys():
             #if page == 0:
             #    self.fnt_image = cv2.imdecode(np.fromfile(file=self.fnt_page_path_dict[page], dtype=np.uint8), cv2.IMREAD_UNCHANGED)
@@ -35,7 +39,7 @@ class FntSpaceCompresser(FntReader):
                     
                     pix_sum_top = 0
                     for i in range(height):
-                        pix_sum_top += np.sum(self.fnt_page_img_dict[page][y+i,x:(x+width),:])
+                        pix_sum_top += np.sum(self.fnt_page_img_dict[page][y+i,x:(x+width),3])
                         if pix_sum_top != 0:
                             if i < min_space_top:
                                 min_space_top = i
@@ -43,7 +47,7 @@ class FntSpaceCompresser(FntReader):
                     
                     pix_sum_bottom = 0
                     for i in range(height):
-                        pix_sum_bottom += np.sum(self.fnt_page_img_dict[page][y+height-1-i,x:(x+width),:])
+                        pix_sum_bottom += np.sum(self.fnt_page_img_dict[page][y+height-1-i,x:(x+width),3])
                         if pix_sum_bottom != 0:
                             if i < min_space_bottom:
                                 min_space_bottom = i
@@ -59,7 +63,11 @@ class FntSpaceCompresser(FntReader):
                 if page == 0:
                     line_mat_copy = self.fnt_page_img_dict[page][y:(y+height),:,:].copy()
                     line_move_up = min(last_line_min_space_bottom, min_space_top)
-                    move_up_sum += line_move_up
+                    if first_line:
+                        move_up_sum += line_move_up
+                        first_line = False
+                    else:
+                        move_up_sum += line_move_up - self.extra_line_space
                     self.fnt_page_img_dict[0][y:(y+height),:,:] = self.fill_value
                     draw_new_line_y = y - move_up_sum
                     print("page: {}, line_y: {}, last_line_min_space_bottom: {}, last_line_y: {}, draw_new_line_y: {}".format(
@@ -77,7 +85,7 @@ class FntSpaceCompresser(FntReader):
                         line_char.attrib.update({"y": str(draw_new_line_y)})
                 else:
                     line_mat_copy = self.fnt_page_img_dict[page][y:(y+height),:,:].copy()
-                    draw_new_line_y = last_line_y + height - min(last_line_min_space_bottom, min_space_top)
+                    draw_new_line_y = last_line_y + height + self.extra_line_space - min(last_line_min_space_bottom, min_space_top)
                     print("page: {}, line_y: {}, last_line_min_space_bottom: {}, last_line_y: {}, draw_new_line_y: {}".format(
                         page,
                         y,
@@ -106,12 +114,10 @@ class FntSpaceCompresser(FntReader):
         self.fnt_page_img_dict = [self.fnt_page_img_dict[0]]
 
 if __name__ == "__main__":
-    fsc = FntSpaceCompresser(["SarasaMonoSC-Bold+KOMIKA\\bmfc\\basic_sarasa.fnt", "SarasaMonoSC-Bold+KOMIKA\\bmfc\\basic_komika_adjusted.fnt"], "basic")
-    fsc = FntSpaceCompresser(["SarasaMonoSC-Bold+KOMIKA\\bmfc\\outline_sarasa.fnt", "SarasaMonoSC-Bold+KOMIKA\\bmfc\\outline_komika_adjusted.fnt"], "outline")
-    fsc = FntSpaceCompresser(["SarasaMonoSC-Bold\\bmfc\\basic.fnt"], "basic")
-    fsc = FntSpaceCompresser(["SarasaMonoSC-Bold\\bmfc\\outline.fnt"], "outline")
-    fsc = FntSpaceCompresser(["SourceMedium+KOMIKA\\bmfc\\basic_source.fnt", "SourceMedium+KOMIKA\\bmfc\\basic_komika_adjusted.fnt"], "basic")
-    fsc = FntSpaceCompresser(["SourceMedium+KOMIKA\\bmfc\\outline_source.fnt", "SourceMedium+KOMIKA\\bmfc\\outline_komika_adjusted.fnt"], "outline")
-    fsc = FntSpaceCompresser(["SourceMedium_mod\\bmfc\\basic.fnt"], "basic")
-    fsc = FntSpaceCompresser(["SourceMedium_mod\\bmfc\\outline.fnt"], "outline")
+    fsc = FntSpaceCompresser(["SarasaUiSC-Bold_mod\\bmfc\\outline_normal.fnt", "SarasaUiSC-Bold_mod\\bmfc\\outline_offset0_adjusted.fnt"], "outline")
+    fsc = FntSpaceCompresser(["SarasaUiSC-Bold_mod\\bmfc\\basic_normal.fnt", "SarasaUiSC-Bold_mod\\bmfc\\basic_offset0_adjusted.fnt"], "basic")
+    
+    fsc = FntSpaceCompresser(["SarasaUiSC-Bold+KOMIKA\\bmfc\\outline_normal.fnt", "SarasaUiSC-Bold+KOMIKA\\bmfc\\outline_offset0_adjusted.fnt"], "outline")
+    fsc = FntSpaceCompresser(["SarasaUiSC-Bold+KOMIKA\\bmfc\\basic_normal.fnt", "SarasaUiSC-Bold+KOMIKA\\bmfc\\basic_offset0_adjusted.fnt"], "basic")
+
     a = 1

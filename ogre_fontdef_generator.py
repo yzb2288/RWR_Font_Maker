@@ -403,9 +403,9 @@ if __name__ == "__main__":
     )
     '''
     
-    basic = "SarasaMonoSC-Bold+KOMIKA\\bmfc\\basic_sarasa_compressed.fnt"
-    basic_outline = "SarasaMonoSC-Bold+KOMIKA\\bmfc\\outline_sarasa_compressed.fnt"
-    input_outline = "SarasaMonoSC-Bold+KOMIKA\\bmfc\\outline_sarasa_compressed.fnt"
+    basic = "SarasaUiSC-Bold+KOMIKA\\bmfc\\basic_normal_compressed.fnt"
+    basic_outline = "SarasaUiSC-Bold+KOMIKA\\bmfc\\outline_normal_compressed.fnt"
+    input_outline = "SarasaUiSC-Bold+KOMIKA\\bmfc\\outline_normal_compressed.fnt"
     
     rfg = OgreFontdefGenerator(
         fnt_file_path=basic,
@@ -479,9 +479,11 @@ if __name__ == "__main__":
         addon_padding=[0, 0, 0, 0]
     )
     
-    basic = "SarasaMonoSC-Bold\\bmfc\\basic_compressed.fnt"
-    basic_outline = "SarasaMonoSC-Bold\\bmfc\\outline_compressed.fnt"
-    input_outline = "SarasaMonoSC-Bold\\bmfc\\outline_compressed.fnt"
+    
+    
+    basic = "SarasaUiSC-Bold_mod\\bmfc\\basic_normal_compressed.fnt"
+    basic_outline = "SarasaUiSC-Bold_mod\\bmfc\\outline_normal_compressed.fnt"
+    input_outline = "SarasaUiSC-Bold_mod\\bmfc\\outline_normal_compressed.fnt"
     
     rfg = OgreFontdefGenerator(
         fnt_file_path=basic,
