@@ -1,0 +1,69 @@
+# AngelCode Bitmap Font Generator configuration file
+fileVersion=1
+
+# font settings
+fontName=更纱黑体 UI SC + KOMIKA
+fontFile=
+charSet=0
+fontSize=43
+aa=4
+scaleH=100
+useSmoothing=1
+isBold=0
+isItalic=0
+useUnicode=1
+disableBoxChars=1
+outputInvalidCharGlyph=0
+dontIncludeKerningPairs=1
+useHinting=0
+renderFromOutline=0
+useClearType=1
+autoFitNumPages=0
+autoFitFontSizeMin=0
+autoFitFontSizeMax=0
+
+# character alignment
+paddingDown=0
+paddingUp=0
+paddingRight=0
+paddingLeft=0
+spacingHoriz=1
+spacingVert=0
+useFixedHeight=1
+forceZero=1
+widthPaddingFactor=0.00
+
+# output file
+outWidth=6000
+outHeight=6000
+outBitDepth=32
+fontDescFormat=1
+fourChnlPacked=0
+textureFormat=png
+textureCompression=0
+alphaChnl=1
+redChnl=0
+greenChnl=0
+blueChnl=0
+invA=0
+invR=0
+invG=0
+invB=0
+
+# outline
+outlineThickness=3
+
+# selected chars
+chars=32-126,160-259,272-275,281-283,296-299,305,321-324,327-328,332-335,338-339,347,352-353,360-365,376
+chars=380-382,402,416-417,431-432,461-476,504-505,593,609,699,710-711,713-715,729-730,732,746-747,768
+chars=769,772,775,780,913-929,931-937,945-969,1024-1025,1027-1032,1036-1038,1040-1105,1107-1112,1116-1118
+chars=1168-1169,8194-8195,8208-8214,8216-8226,8229-8231,8240,8242-8243,8245,8249-8252,8258,8263-8265,8273
+chars=8470,8482,8544-8555,8560-8571,8592-8601,8632-8633,8644-8646,8651-8652,8656,8658,8660,8678-8681,8693
+chars=8704,8706-8707,8709-8715,8719,8721-8723,8725,8730,8733-8736,8739,8741-8750,8756-8759,8765,8771,8773
+chars=8776,8780,8786,8800-8802,8804-8807,8810-8811,8814-8815,8818-8819,8822-8823,8834-8839,8842-8843,8853
+chars=8854-8857,8864,8869,8895,8922-8923,8943,9728-9731,9733-9734,9737,9742-9743,9750-9751,9756-9759,9775
+chars=9792-9794,9824-9839,9842-9853,9888,9917-9918,12288-12351,12353-12438,12441-12543,12549-12591,12593
+chars=12594-12643,12704-12735,64257-64258,65040-65049,65072-65103,65279,65281-65381,65438-65470,65474
+chars=65475-65479,65482-65487,65490-65495,65498-65500,65504-65510,65512-65518
+
+# imported icon images
